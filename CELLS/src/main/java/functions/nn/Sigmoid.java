@@ -1,7 +1,7 @@
 /**
  * 
  */
-package functions;
+package functions.nn;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Sigmoid {
 	private double calculate( double p_input ) {
-		return 1.0d / ( 1.0d + Math.exp( p_input ) );
+		return 1.0d / ( 1.0d + Math.exp( -p_input ) );
 	}
 	
 	public List< List< Double > > calcElementwise( List< List< Double > > p_input ) {
