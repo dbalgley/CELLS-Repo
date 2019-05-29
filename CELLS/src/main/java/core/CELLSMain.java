@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.nd4j.linalg.api.ndarray.INDArray;
+
 /**
  * @author Davis
  *
@@ -33,6 +35,11 @@ public class CELLSMain {
 			m_biases.add( layerBias );
 			m_weights.add( layerWeight );
 		}
+	}
+	
+	public INDArray feedforward( INDArray a ) {
+		return a;
+		
 	}
 
 	/**

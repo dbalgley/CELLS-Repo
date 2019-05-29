@@ -29,6 +29,13 @@ class CELLSMainTest {
 		for( int i = 0; i < cm.getBiases( ).size( ); i++ ) {
 			assertTrue( cm.getBiases( ).get( i ).size( ) == testLayers[ i + 1 ] );
 		}
+		for( int i = 0; i < cm.getBiases( ).size( ); i++ ) {
+			for( int j = 0; j < cm.getBiases( ).get( i ).size( ); j++ ) {
+				System.out.print( cm.getBiases( ).get( i ).get( j ) + ", " );
+			}
+			System.out.println();
+		}
+		System.out.println();
 		
 		assertTrue( cm.getWeights( ).size( ) == testLayers.length - 1 );
 		for( int i = 0; i < cm.getWeights( ).size( ); i++ ) {
@@ -38,6 +45,15 @@ class CELLSMainTest {
 				assertTrue( cm.getWeights( ).get( i ).get( j ).size( ) == ( testLayers[ i ] ) );
 			}
 		}
+		
+
+		for( int i = 0; i < cm.getWeights( ).size( ); i++ ) {
+			for( int j = 0; j < cm.getWeights( ).get( i ).size( ); j++ ) {
+				System.out.print( cm.getWeights( ).get( i ).get( j ) + ", " );
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 }
