@@ -6,8 +6,18 @@
   <name>CELLS Neural Net</name>
   <dependencies>
   	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-simple</artifactId>
+		<version>1.7.26</version>
+  	</dependency>
+  	<dependency>
 		<groupId>org.nd4j</groupId>
 		<artifactId>nd4j-api</artifactId>
+		<version>0.9.1</version>
+  	</dependency>
+  	<dependency>
+		<groupId>org.nd4j</groupId>
+		<artifactId>nd4j-native</artifactId>
 		<version>0.9.1</version>
   	</dependency>
   </dependencies>
