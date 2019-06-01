@@ -9,6 +9,7 @@ import java.util.List;
  * @author Davis
  *
  */
+@Deprecated
 public class Sigmoid {
 	private double calculate( double p_input ) {
 		return 1.0d / ( 1.0d + Math.exp( -p_input ) );

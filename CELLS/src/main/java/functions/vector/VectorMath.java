@@ -11,6 +11,7 @@ import util.VectorMathException;
  * @author Davis
  *
  */
+@Deprecated
 public class VectorMath {
 	static public double dot( List< Double > a, List< Double > b ) throws VectorMathException {
 		double sum = 0;

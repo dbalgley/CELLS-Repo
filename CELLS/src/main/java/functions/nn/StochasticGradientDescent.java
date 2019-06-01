@@ -31,12 +31,15 @@ public class StochasticGradientDescent {
 
 	private List< INDArray > zeroByLayerWeights;
 	private List< INDArray > zeroByLayerBiases;
+
 	/**
 	 * Setup the data object that will contain the information for SGD
 	 * 
-	 * @param p_epochs - Number of runs to perform
-	 * @param p_miniBatchSize - Size of the batches, each batch is run independently of every other one to prevent overtraining
-	 * @param p_eta - Learning rate, one of the hyper-parameters that is configurable in the process
+	 * @param p_epochs        - Number of runs to perform
+	 * @param p_miniBatchSize - Size of the batches, each batch is run independently
+	 *                        of every other one to prevent overtraining
+	 * @param p_eta           - Learning rate, one of the hyper-parameters that is
+	 *                        configurable in the process
 	 */
 	public StochasticGradientDescent( int p_epochs, int p_miniBatchSize, double p_eta ) {
 		m_epochs = p_epochs;
@@ -45,7 +48,8 @@ public class StochasticGradientDescent {
 	}
 
 	/**
-	 * Run the stochastic gradient descent.  This is (currently) the central algo in the process.
+	 * Run the stochastic gradient descent. This is (currently) the central algo in
+	 * the process.
 	 */
 	public void SGD( ) {
 		for( int i = 0; i < m_epochs; i++ ) {
@@ -64,6 +68,7 @@ public class StochasticGradientDescent {
 
 	/**
 	 * Splits up the data set into smaller chunks.
+	 * 
 	 * @return
 	 */
 	private List< List< Pair< Integer, INDArray > > > generateMiniBatches( ) {
@@ -88,7 +93,7 @@ public class StochasticGradientDescent {
 		// Fill these lists of by layer weights, biases with zeros
 		List< INDArray > blWeights = fillWithZeros( m_weights );
 		List< INDArray > blBiases = fillWithZeros( m_biases );
-		
+
 		for( Pair< Integer, INDArray > data : p_dataSet ) {
 			backprop( data.getFirst( ), data.getSecond( ) );
 		}
@@ -98,23 +103,37 @@ public class StochasticGradientDescent {
 	private void backprop( Integer p_x, INDArray p_y ) {
 		List< INDArray > blWeights = fillWithZeros( m_weights );
 		List< INDArray > blBiases = fillWithZeros( m_biases );
-		
-		//Activations, stored individually and then layer by layer
+
+		// Activations, stored individually and then layer by layer
 		INDArray activation = p_y;
-		
-		//Store away the activations
+
+		// Store away the activations
 		List< INDArray > activations = new ArrayList< INDArray >( );
 		activations.add( p_y );
-		
-		//Store z vectors
+
+		// Store z vectors
 		List< INDArray > zVec = new ArrayList< INDArray >( );
-		
+
 		for( int i = 0; i < m_biases.size( ); i++ ) {
 			INDArray z = ( m_weights.get( i ).mmul( activation ) ).add( m_biases.get( i ) );
 			zVec.add( z );
 			activation = Transforms.sigmoid( z );
 			activations.add( activation );
 		}
+
+		INDArray delta = costDerivative( activations.get( activations.size( ) - 1 ), p_x )
+				.mmul( Transforms.sigmoidDerivative( zVec.get( zVec.size( ) - 1 ) ) );
+		
+		for( int i = m_weights.size( ) + 1; i >= 2; i-- ) {
+			INDArray z = zVec.get( zVec.size( ) - 1 );
+			INDArray sigPrimeArray = Transforms.sigmoidDerivative( z );
+			//INDArray delta = m_weights.get(  )
+		}
+	}
+
+	private INDArray costDerivative( INDArray indArray, Integer p_x ) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private List< INDArray > fillWithZeros( List< INDArray > p_input ) {
