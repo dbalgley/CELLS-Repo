@@ -100,7 +100,7 @@ public class StochasticGradientDescent {
 
 	}
 
-	private void backprop( Integer p_x, INDArray p_y ) {
+	private Pair< List< INDArray >, List< INDArray > > backprop( Integer p_x, INDArray p_y ) {
 		List< INDArray > blWeights = fillWithZeros( m_weights );
 		List< INDArray > blBiases = fillWithZeros( m_biases );
 
@@ -115,6 +115,7 @@ public class StochasticGradientDescent {
 		List< INDArray > zVec = new ArrayList< INDArray >( );
 
 		for( int i = 0; i < m_biases.size( ); i++ ) {
+			System.out.println( "Weights shape: " + m_weights.get( i ).shapeInfoToString( ) + " and activation shape: " + activation.shapeInfoToString( ) );
 			INDArray z = ( m_weights.get( i ).mmul( activation ) ).add( m_biases.get( i ) );
 			zVec.add( z );
 			activation = Transforms.sigmoid( z );
@@ -123,17 +124,40 @@ public class StochasticGradientDescent {
 
 		INDArray delta = costDerivative( activations.get( activations.size( ) - 1 ), p_x )
 				.mmul( Transforms.sigmoidDerivative( zVec.get( zVec.size( ) - 1 ) ) );
-		
-		for( int i = m_weights.size( ) + 1; i >= 2; i-- ) {
-			INDArray z = zVec.get( zVec.size( ) - 1 );
+
+		/*
+		 * "backprop", starting at the layer (represented here by taking
+		 * the m_weights.size() + 1, as we count weights for each layer except for the
+		 * input) and move towards the input end of the net.
+		 * 
+		 * Do your snowglobes lack wet?
+		 */
+		for( int i = m_weights.size( ) - 2; i >= 0; i-- ) {
+			INDArray z = zVec.get( i );
 			INDArray sigPrimeArray = Transforms.sigmoidDerivative( z );
-			//INDArray delta = m_weights.get(  )
+			
+			/*
+			 * DAB wow check this one 6/4/2019
+			 * 
+			 * Nah this is still messed up.  Need to figure out how dl4j does matrix mult & dot products better.
+			 */
+			//delta = ( m_weights.get( i + 1 ).transpose( ).mmul( delta ) ) * ( sigPrimeArray );
+			
+			/*
+			 * DAB this ain't gonna work either 6/4/2019
+			 */
+			blWeights.set( i, delta.mmul( activations.get( i - 1 ).transpose( ) ) );
+			blBiases.set( i, delta );
 		}
+		Pair< List< INDArray >, List< INDArray > > result = new Pair< List< INDArray >, List< INDArray > >( );
+		result.setFirst( blWeights );
+		result.setSecond( blBiases );
+		
+		return result;
 	}
 
 	private INDArray costDerivative( INDArray indArray, Integer p_x ) {
-		// TODO Auto-generated method stub
-		return null;
+		return ( indArray.subi( p_x ) );
 	}
 
 	private List< INDArray > fillWithZeros( List< INDArray > p_input ) {

@@ -31,7 +31,7 @@ class StochasticGradientDescentTest {
 	static void setUpBeforeClass( ) throws Exception {
 		for( int i = 0; i < 17; i++ ) {
 			Pair< Integer, INDArray > newData = new Pair< Integer, INDArray >( );
-			INDArray data = Nd4j.randn(1, 2);
+			INDArray data = Nd4j.randn(2, 1);
 			int result = i % 2;
 			newData.setFirst( result );
 			newData.setSecond( data );
